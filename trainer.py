@@ -58,10 +58,12 @@ class Trainer:
             total += targets.size(0)
             correct += torch.eq(predicted, targets).sum().item()
 
+            actual_train_loss = train_loss / batch_idx
+
             now = time.time()
             print('\r', end='')
             print(self.status_bar(now-self.start, epoch, 'train', batch_idx,
-                                  train_loss, correct / total), end='  ')
+                                  actual_train_loss, correct / total), end='  ')
         print('\n', end='')
 
         return {
@@ -95,10 +97,12 @@ class Trainer:
                 total += targets.size(0)
                 correct += torch.eq(predicted, targets).sum().item()
 
+                actual_valid_loss = valid_loss / batch_idx
+
                 now = time.time()
                 print('\r', end='')
                 print(self.status_bar(now-self.start, epoch, 'valid', batch_idx,
-                                      valid_loss, correct / total), end='  ')
+                                      actual_valid_loss, correct / total), end='  ')
         print('\n\n', end='')
 
         return {
@@ -172,7 +176,7 @@ class Trainer:
         fig.show()
 
 
-    def status_bar(self, time_elapsed, epoch, train_or_valid, batch_idx, loss_step, acc, length=50):
+    def status_bar(self, time_elapsed, epoch, train_or_valid, batch_idx, loss, acc, length=50):
         """show status at train_one_epoch & valid_one_epoch"""
         if train_or_valid == 'train':
             num_batches = self.num_batches_train
@@ -182,11 +186,10 @@ class Trainer:
         rate = batch_idx / num_batches
         num_equals = math.floor(length * rate) - 1
         num_dots = length - num_equals - 1
-        actual_loss = loss_step / (batch_idx + 1)
 
         status = f'[{time_elapsed // 60:3.0f}m {time_elapsed % 60:5.2f}s | ' \
                  f'epoch: {epoch}/{self.num_epochs} | {train_or_valid:5s}]' \
                  f'[{"=" * num_equals}>{"." * num_dots}]' \
-                 f'[loss:{actual_loss:6.3f} | acc:{acc:8.3%}]'
+                 f'[loss:{loss:6.3f} | acc:{acc:8.3%}]'
 
         return status
