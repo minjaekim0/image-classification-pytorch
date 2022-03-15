@@ -1,8 +1,8 @@
-*test*
 *temp*
 
 .idea/
 saved_models/
+dataset/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
