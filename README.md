@@ -11,6 +11,7 @@
 ### result for CIFAR10
 - \# of epochs = 200
 - Adam optimizer: lr = 1e-3, weight_decay = 1e-4
+- CosineAnnealingLR scheduler: T_max = 200
 
 | model      | accuracy |
 |------------|----------|
